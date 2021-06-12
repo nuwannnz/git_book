@@ -1,7 +1,54 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:git_book/notes/noteList.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(App());
+}
+
+class App extends StatefulWidget {
+  // Create the initialization Future outside of `build`:
+  @override
+  _AppState createState() => _AppState();
+}
+
+class _AppState extends State<App> {
+  /// The future is part of the state of our widget. We should not call `initializeApp`
+  /// directly inside [build].
+  final Future<FirebaseApp> _initialization = Firebase.initializeApp();
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+      // Initialize FlutterFire:
+      future: _initialization,
+      builder: (context, snapshot) {
+        // Check for errors
+        if (snapshot.hasError) {
+          return Container(
+            child: Text('Failed to connect to firebase'),
+          );
+        }
+
+        // Once complete, show your application
+        if (snapshot.connectionState == ConnectionState.done) {
+          return MyApp();
+        }
+
+        // Otherwise, show something whilst waiting for initialization to complete
+        return MaterialApp(
+          home: Scaffold(
+              body: Container(
+            child: Column(
+              children: [
+                Text('Connecting to firebase'),
+              ],
+            ),
+          )),
+        );
+      },
+    );
+  }
 }
 
 class MyApp extends StatelessWidget {
@@ -93,9 +140,12 @@ class _MyHomePageState extends State<MyHomePage> {
           // horizontal).
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-            ),
+            ElevatedButton(
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => new NoteList()));
+                },
+                child: Text('View note list')),
             Text(
               '$_counter',
               style: Theme.of(context).textTheme.headline4,
