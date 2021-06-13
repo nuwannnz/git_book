@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:git_book/notes/noteList.dart';
+import 'package:git_book/notes/notePopup.dart';
 
 void main() {
   runApp(App());
@@ -67,7 +68,7 @@ class MyApp extends StatelessWidget {
         // or simply save your changes to "hot reload" in a Flutter IDE).
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.amber,
       ),
       home: MyHomePage(title: 'Flutter Demo Home Page'),
     );
@@ -104,6 +105,14 @@ class _MyHomePageState extends State<MyHomePage> {
       // called again, and so nothing would appear to happen.
       _counter++;
     });
+  }
+
+  Future<void> _addNewNoteClick(BuildContext context) async {
+    return await showDialog(
+        context: context,
+        builder: (context) {
+          return NotePopup(lesson: "lesson");
+        });
   }
 
   @override
@@ -146,6 +155,11 @@ class _MyHomePageState extends State<MyHomePage> {
                       MaterialPageRoute(builder: (context) => new NoteList()));
                 },
                 child: Text('View note list')),
+            ElevatedButton(
+                onPressed: () async {
+                  await _addNewNoteClick(context);
+                },
+                child: Text('Add new note')),
             Text(
               '$_counter',
               style: Theme.of(context).textTheme.headline4,
