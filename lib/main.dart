@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:git_book/Screens/main_screen.dart';
+import 'package:git_book/Screens/ListTitles.dart';
+import 'package:git_book/notes/noteList.dart';
+import 'package:git_book/notes/notePopup.dart';
 
 void main() => runApp(MyApp());
 
@@ -8,6 +11,14 @@ class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
   static const String _title = 'Git Book';
+
+  Future<void> _addNewNoteClick(BuildContext context) async {
+    return await showDialog(
+        context: context,
+        builder: (context) {
+          return NotePopup(lesson: "lesson");
+        });
+  }
 
   @override
   Widget build(BuildContext context) {
