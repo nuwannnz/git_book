@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:git_book/Screens/ListTitles.dart';
+import 'package:git_book/Screens/loading.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -14,6 +15,7 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   bool _rememberMe = false;
+  bool _loading = false;
 
   final _formKey = GlobalKey<FormState>();
 
@@ -39,10 +41,10 @@ class _LoginScreenState extends State<LoginScreen> {
 
   _formSubmit() async {
     if (_formKey.currentState!.validate()) {
+      setState(() => _loading = true);
       _formKey.currentState!.save();
       print('Email:' + _emailInputController.text);
       print('Password:' + _passwordInputController.text);
-
       try {
         await FirebaseAuth.instance.signInWithEmailAndPassword(
             email: _emailInputController.text,
@@ -50,8 +52,32 @@ class _LoginScreenState extends State<LoginScreen> {
       } on FirebaseAuthException catch (e) {
         if (e.code == 'user-not-found') {
           print('No user found for that email.');
+          setState(() => _loading = false);
+          showDialog<String>(
+              context: context,
+              builder: (BuildContext context) => AlertDialog(
+                    title: Text('Uh oh.'),
+                    content: Text('No user found for that email.'),
+                    actions: <Widget>[
+                      TextButton(
+                          onPressed: () => Navigator.pop(context, 'TRY AGAIN'),
+                          child: Text('TRY AGAIN'))
+                    ],
+                  ));
         } else if (e.code == 'wrong-password') {
           print('Wrong password provided for that user.');
+          setState(() => _loading = false);
+          showDialog<String>(
+              context: context,
+              builder: (BuildContext context) => AlertDialog(
+                    title: Text('Uh oh.'),
+                    content: Text('Wrong password provided for that user.'),
+                    actions: <Widget>[
+                      TextButton(
+                          onPressed: () => Navigator.pop(context, 'TRY AGAIN'),
+                          child: Text('TRY AGAIN'))
+                    ],
+                  ));
         }
       }
     }
@@ -291,37 +317,39 @@ class _LoginScreenState extends State<LoginScreen> {
 // Main Code
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: Container(
-      margin: const EdgeInsets.only(top: 20.0),
-      child: Wrap(
-        children: <Widget>[
-          Center(
-            child: Text(
-              'Sign In',
-              style: TextStyle(
-                  color: Colors.black,
-                  fontFamily: 'OpenSans',
-                  fontSize: 30.0,
-                  fontWeight: FontWeight.bold),
+    return _loading
+        ? Loading()
+        : Scaffold(
+            body: Container(
+            margin: const EdgeInsets.only(top: 20.0),
+            child: Wrap(
+              children: <Widget>[
+                Center(
+                  child: Text(
+                    'Sign In',
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontFamily: 'OpenSans',
+                        fontSize: 30.0,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ),
+                Form(
+                    key: _formKey,
+                    child: Column(
+                      children: <Widget>[
+                        _buildEmail(),
+                        _buildPassword(),
+                      ],
+                    )),
+                _buildForgotPassword(),
+                _buildRememberMe(),
+                _buildSignInBtn(),
+                _buildSignInWith(),
+                _buildSignInWithGoogle(),
+                _buildSignUpMsg(),
+              ],
             ),
-          ),
-          Form(
-              key: _formKey,
-              child: Column(
-                children: <Widget>[
-                  _buildEmail(),
-                  _buildPassword(),
-                ],
-              )),
-          _buildForgotPassword(),
-          _buildRememberMe(),
-          _buildSignInBtn(),
-          _buildSignInWith(),
-          _buildSignInWithGoogle(),
-          _buildSignUpMsg(),
-        ],
-      ),
-    ));
+          ));
   }
 }

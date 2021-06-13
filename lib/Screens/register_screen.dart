@@ -1,6 +1,9 @@
+import 'dart:developer';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:git_book/Screens/ListTitles.dart';
+import 'package:git_book/Screens/loading.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -14,6 +17,7 @@ class RegisterScreen extends StatefulWidget {
 
 class _RegisterScreenState extends State<RegisterScreen> {
   bool _agree = false;
+  bool _loading = false;
 
   final _formKey = GlobalKey<FormState>();
 
@@ -40,6 +44,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   _formSubmit() async {
     if (_formKey.currentState!.validate()) {
+      setState(() => _loading = true);
       _formKey.currentState!.save();
       print('Email:' + _emailInputController.text);
       print('Password:' + _passwordInputController.text);
@@ -48,12 +53,36 @@ class _RegisterScreenState extends State<RegisterScreen> {
       try {
         await FirebaseAuth.instance.createUserWithEmailAndPassword(
             email: _emailInputController.text,
-            password: _passwordInputController.text);
+            password: _reEnterPwdInputController.text);
       } on FirebaseAuthException catch (e) {
         if (e.code == 'weak-password') {
           print('The password provided is too weak.');
+          setState(() => _loading = false);
+          showDialog<String>(
+              context: context,
+              builder: (BuildContext context) => AlertDialog(
+                    title: Text('Uh oh.'),
+                    content: Text('The password provided is too weak.'),
+                    actions: <Widget>[
+                      TextButton(
+                          onPressed: () => Navigator.pop(context, 'TRY AGAIN'),
+                          child: Text('TRY AGAIN'))
+                    ],
+                  ));
         } else if (e.code == 'email-already-in-use') {
           print('The account already exists for that email.');
+          setState(() => _loading = false);
+          showDialog<String>(
+              context: context,
+              builder: (BuildContext context) => AlertDialog(
+                    title: Text('Uh oh.'),
+                    content: Text('The account already exists for that email.'),
+                    actions: <Widget>[
+                      TextButton(
+                          onPressed: () => Navigator.pop(context, 'TRY AGAIN'),
+                          child: Text('TRY AGAIN'))
+                    ],
+                  ));
         }
       } catch (e) {
         print(e);
@@ -76,7 +105,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
       accessToken: googleAuth!.accessToken,
       idToken: googleAuth.idToken,
     );
-
     // Once signed in, return the UserCredential
     return await FirebaseAuth.instance.signInWithCredential(credential);
   }
@@ -144,33 +172,38 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   Widget _buildReEnterPassword() {
     return Container(
-        margin: const EdgeInsets.only(
-            top: 20.0, bottom: 0.0, right: 20.0, left: 20.0),
-        child: Wrap(
-          children: <Widget>[
-            TextFormField(
-              controller: _reEnterPwdInputController,
-              validator: (input) => input != _reEnterPwdInputController.text
-                  ? 'Password not much'
-                  : null,
-              obscureText: true,
-              decoration: InputDecoration(
-                  labelStyle: TextStyle(color: Colors.green),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: new BorderSide(color: Colors.green, width: 2.0),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: new BorderSide(color: Colors.green, width: 2.0),
-                  ),
-                  hintText: 'Re-enter your password',
-                  prefixIcon: Icon(
-                    Icons.lock,
-                    color: Colors.green,
-                  ),
-                  labelText: 'Re-enter Password'),
+      margin: const EdgeInsets.only(
+          top: 20.0, bottom: 0.0, right: 20.0, left: 20.0),
+      child: TextFormField(
+        controller: _reEnterPwdInputController,
+        validator: (value) {
+          if (value!.isEmpty) {
+            return "Please Re-Enter New Password";
+          } else if (value.length < 8) {
+            return "Password must be atleast 8 characters long";
+          } else if (value != _reEnterPwdInputController.text) {
+            return "Password must be same as above";
+          } else {
+            return null;
+          }
+        },
+        obscureText: true,
+        decoration: InputDecoration(
+            labelStyle: TextStyle(color: Colors.green),
+            focusedBorder: OutlineInputBorder(
+              borderSide: new BorderSide(color: Colors.green, width: 2.0),
             ),
-          ],
-        ));
+            enabledBorder: OutlineInputBorder(
+              borderSide: new BorderSide(color: Colors.green, width: 2.0),
+            ),
+            hintText: 'Re-enter your password',
+            prefixIcon: Icon(
+              Icons.lock,
+              color: Colors.green,
+            ),
+            labelText: 'Re-enter Password'),
+      ),
+    );
   }
 
   Widget _buildCheckAgreement() {
@@ -308,38 +341,40 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        margin: const EdgeInsets.only(top: 20.0),
-        child: Wrap(
-          children: <Widget>[
-            Center(
-              child: Text(
-                'Sign Up',
-                style: TextStyle(
-                    color: Colors.black,
-                    fontFamily: 'OpenSans',
-                    fontSize: 30.0,
-                    fontWeight: FontWeight.bold),
+    return _loading
+        ? Loading()
+        : Scaffold(
+            body: Container(
+              margin: const EdgeInsets.only(top: 20.0),
+              child: Wrap(
+                children: <Widget>[
+                  Center(
+                    child: Text(
+                      'Sign Up',
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontFamily: 'OpenSans',
+                          fontSize: 30.0,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  Form(
+                      key: _formKey,
+                      child: Column(
+                        children: <Widget>[
+                          _buildEmail(),
+                          _buildPassword(),
+                          _buildReEnterPassword(),
+                          _buildCheckAgreement(),
+                          _buildSignUpBtn(),
+                          _buildSignUpWith(),
+                          _buildSignUpWithGoogle(),
+                          _buildSignInMsg(),
+                        ],
+                      )),
+                ],
               ),
             ),
-            Form(
-                key: _formKey,
-                child: Column(
-                  children: <Widget>[
-                    _buildEmail(),
-                    _buildPassword(),
-                    _buildReEnterPassword(),
-                    _buildCheckAgreement(),
-                    _buildSignUpBtn(),
-                    _buildSignUpWith(),
-                    _buildSignUpWithGoogle(),
-                    _buildSignInMsg(),
-                  ],
-                )),
-          ],
-        ),
-      ),
-    );
+          );
   }
 }

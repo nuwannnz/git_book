@@ -1,6 +1,9 @@
 import 'dart:convert';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:git_book/Screens/main_screen.dart';
 import 'package:git_book/notes/noteList.dart';
 import 'package:git_book/notes/notePopup.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 import 'TitleBody.dart';
 import 'package:flutter/material.dart';
@@ -25,6 +28,16 @@ class _ListTitlesState extends State<ListTitles> {
       appBar: AppBar(
         title: Text("Learn GitHub here.."),
         actions: [
+          IconButton(
+            icon: const Icon(Icons.exit_to_app),
+            tooltip: 'View notes',
+            onPressed: () async {
+              await FirebaseAuth.instance.signOut();
+              await GoogleSignIn().signOut();
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => new MainScreen()));
+            },
+          ),
           IconButton(
             icon: const Icon(Icons.book),
             tooltip: 'View notes',

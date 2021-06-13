@@ -30,6 +30,7 @@ class _MainScreenState extends State<MainScreen>
       length: 2,
       child: Scaffold(
         appBar: AppBar(
+          centerTitle: true,
           backgroundColor: Colors.orange[400],
           title: Text(
             'Git Book',
