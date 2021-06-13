@@ -26,19 +26,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
       print('Password:' + _passwordInputController.text);
       print('Re-enter Password:' + _reEnterPwdInputController.text);
 
-      // try {
-      //   await FirebaseAuth.instance.createUserWithEmailAndPassword(
-      //       email: _emailInputController.text,
-      //       password: _passwordInputController.text);
-      // } on FirebaseAuthException catch (e) {
-      //   if (e.code == 'weak-password') {
-      //     print('The password provided is too weak.');
-      //   } else if (e.code == 'email-already-in-use') {
-      //     print('The account already exists for that email.');
-      //   }
-      // } catch (e) {
-      //   print(e);
-      // }
+      try {
+        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+            email: _emailInputController.text,
+            password: _passwordInputController.text);
+        widget.tabController!.animateTo(0);
+      } on FirebaseAuthException catch (e) {
+        if (e.code == 'weak-password') {
+          print('The password provided is too weak.');
+        } else if (e.code == 'email-already-in-use') {
+          print('The account already exists for that email.');
+        }
+      } catch (e) {
+        print(e);
+      }
     }
   }
 

@@ -1,5 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:git_book/Screens/home.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class LoginScreen extends StatefulWidget {
   LoginScreen({Key? key, this.tabController}) : super(key: key);
@@ -18,16 +20,22 @@ class _LoginScreenState extends State<LoginScreen> {
   TextEditingController _emailInputController = TextEditingController();
   TextEditingController _passwordInputController = TextEditingController();
 
-  // _LoginScreenState() {
-  //   FirebaseAuth.instance.authStateChanges().listen((User? user) {
-  //     if (user == null) {
-  //       print('User is currently signed out!');
-  //     } else {
-  //       print('User is signed in!');
-  //       // navigation
-  //     }
-  //   });
-  // }
+  _LoginScreenState() {
+    FirebaseAuth.instance.signOut();
+    GoogleSignIn().signOut();
+    FirebaseAuth.instance.authStateChanges().listen((User? user) {
+      if (user == null) {
+        print('User is currently signed out!');
+      } else {
+        print('User is signed in!');
+        // FirebaseAuth.instance.signOut();
+
+        Navigator.of(context).push(MaterialPageRoute(builder: (_) {
+          return HomeScreen();
+        }));
+      }
+    });
+  }
 
   _formSubmit() async {
     if (_formKey.currentState!.validate()) {
@@ -35,18 +43,41 @@ class _LoginScreenState extends State<LoginScreen> {
       print('Email:' + _emailInputController.text);
       print('Password:' + _passwordInputController.text);
 
-      //   try {
-      //     await FirebaseAuth.instance.signInWithEmailAndPassword(
-      //         email: _emailInputController.text,
-      //         password: _passwordInputController.text);
-      //   } on FirebaseAuthException catch (e) {
-      //     if (e.code == 'user-not-found') {
-      //       print('No user found for that email.');
-      //     } else if (e.code == 'wrong-password') {
-      //       print('Wrong password provided for that user.');
-      //     }
-      //   }
+      try {
+        await FirebaseAuth.instance.signInWithEmailAndPassword(
+            email: _emailInputController.text,
+            password: _passwordInputController.text);
+        Navigator.of(context).push(MaterialPageRoute(builder: (_) {
+          return HomeScreen();
+        }));
+      } on FirebaseAuthException catch (e) {
+        if (e.code == 'user-not-found') {
+          print('No user found for that email.');
+        } else if (e.code == 'wrong-password') {
+          print('Wrong password provided for that user.');
+        }
+      }
     }
+  }
+
+  Future<UserCredential> _signInWithGoogle() async {
+    await FirebaseAuth.instance.signOut();
+    await GoogleSignIn().signOut();
+    // Trigger the authentication flow
+    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+
+    // Obtain the auth details from the request
+    final GoogleSignInAuthentication? googleAuth =
+        await googleUser!.authentication;
+
+    // Create a new credential
+    final credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth!.accessToken,
+      idToken: googleAuth.idToken,
+    );
+
+    // Once signed in, return the UserCredential
+    return await FirebaseAuth.instance.signInWithCredential(credential);
   }
 
   Widget _buildEmail() {
@@ -203,7 +234,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return Center(
       // ignore: deprecated_member_use
       child: FlatButton(
-        onPressed: () {},
+        onPressed: _signInWithGoogle,
         child: Container(
           margin: const EdgeInsets.only(bottom: 20.0),
           height: 60.0,
