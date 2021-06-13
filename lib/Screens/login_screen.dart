@@ -1,23 +1,64 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-/// This is the stateless widget that the main application instantiates.
-class HomeScreen extends StatefulWidget {
+class LoginScreen extends StatefulWidget {
+  LoginScreen({Key? key, this.tabController}) : super(key: key);
+
+  final TabController? tabController;
+
   @override
-  _HomeScreenState createState() => _HomeScreenState();
+  _LoginScreenState createState() => _LoginScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _LoginScreenState extends State<LoginScreen> {
   bool _rememberMe = false;
-  bool _agree = false;
 
-  Widget _buildEmailSignIn() {
+  final _formKey = GlobalKey<FormState>();
+
+  TextEditingController _emailInputController = TextEditingController();
+  TextEditingController _passwordInputController = TextEditingController();
+
+  // _LoginScreenState() {
+  //   FirebaseAuth.instance.authStateChanges().listen((User? user) {
+  //     if (user == null) {
+  //       print('User is currently signed out!');
+  //     } else {
+  //       print('User is signed in!');
+  //       // navigation
+  //     }
+  //   });
+  // }
+
+  _formSubmit() async {
+    if (_formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
+      print('Email:' + _emailInputController.text);
+      print('Password:' + _passwordInputController.text);
+
+      //   try {
+      //     await FirebaseAuth.instance.signInWithEmailAndPassword(
+      //         email: _emailInputController.text,
+      //         password: _passwordInputController.text);
+      //   } on FirebaseAuthException catch (e) {
+      //     if (e.code == 'user-not-found') {
+      //       print('No user found for that email.');
+      //     } else if (e.code == 'wrong-password') {
+      //       print('Wrong password provided for that user.');
+      //     }
+      //   }
+    }
+  }
+
+  Widget _buildEmail() {
     return Container(
         margin: const EdgeInsets.only(
             top: 20.0, bottom: 0.0, right: 20.0, left: 20.0),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            TextField(
+            TextFormField(
+              controller: _emailInputController,
+              validator: (input) =>
+                  (!input!.contains('@') ? 'Please enter a valid email' : null),
               obscureText: false,
               decoration: InputDecoration(
                   labelStyle: TextStyle(color: Colors.green),
@@ -38,14 +79,18 @@ class _HomeScreenState extends State<HomeScreen> {
         ));
   }
 
-  Widget _buildPasswordSignIn() {
+  Widget _buildPassword() {
     return Container(
         margin: const EdgeInsets.only(
             top: 20.0, bottom: 0.0, right: 20.0, left: 20.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            TextField(
+            TextFormField(
+              controller: _passwordInputController,
+              validator: (input) => input!.length < 8
+                  ? 'Password must be at least 8 characters'
+                  : null,
               obscureText: true,
               decoration: InputDecoration(
                   labelStyle: TextStyle(color: Colors.green),
@@ -66,10 +111,11 @@ class _HomeScreenState extends State<HomeScreen> {
         ));
   }
 
-  Widget _buildForgotPasswordSignIn() {
+  Widget _buildForgotPassword() {
     return Container(
       margin: const EdgeInsets.only(right: 20.0),
       alignment: Alignment.centerRight,
+      // ignore: deprecated_member_use
       child: FlatButton(
         onPressed: () => print('Forgot Password Button Pressed'),
         padding: EdgeInsets.only(right: 0.0),
@@ -80,7 +126,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _buildRememberMeSignIn() {
+  Widget _buildRememberMe() {
     return Container(
       margin: const EdgeInsets.only(left: 20.0),
       child: Row(
@@ -110,9 +156,10 @@ class _HomeScreenState extends State<HomeScreen> {
       margin: const EdgeInsets.only(left: 20.0, right: 20.0, bottom: 20.0),
       padding: EdgeInsets.symmetric(vertical: 5.0),
       width: double.infinity,
+      // ignore: deprecated_member_use
       child: RaisedButton(
         elevation: 5.0,
-        onPressed: () => print('Login Button Pressed'),
+        onPressed: _formSubmit,
         padding: EdgeInsets.all(15.0),
         shape:
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
@@ -153,357 +200,100 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildSignInWithGoogle() {
-    return GestureDetector(
-        onTap: () => print('Sign In with Google'),
-        child: Center(
-          child: Container(
-            margin: const EdgeInsets.only(bottom: 15.0),
-            height: 60.0,
-            width: 60.0,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: Colors.white,
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black26,
-                  offset: Offset(0, 2),
-                  blurRadius: 6.0,
-                ),
-              ],
-              image: DecorationImage(
-                image: AssetImage(
-                  'images/google.jpg',
-                ),
+    return Center(
+      // ignore: deprecated_member_use
+      child: FlatButton(
+        onPressed: () {},
+        child: Container(
+          margin: const EdgeInsets.only(bottom: 20.0),
+          height: 60.0,
+          width: 60.0,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: Colors.white,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black26,
+                offset: Offset(0, 2),
+                blurRadius: 6.0,
+              ),
+            ],
+            image: DecorationImage(
+              image: AssetImage(
+                'images/google.jpg',
               ),
             ),
           ),
-        ));
+        ),
+      ),
+    );
   }
 
   Widget _buildSignUpMsg() {
-    return GestureDetector(
-      onTap: () => print('Sign Up Button Pressed'),
-      child: Center(
-        child: RichText(
-          text: TextSpan(
-            children: [
-              TextSpan(
-                  text: 'Don\'t have an account?  ',
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 18.0,
-                      fontWeight: FontWeight.w400)),
-              TextSpan(
-                  text: 'Sign Up',
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 18.0,
-                      fontWeight: FontWeight.bold)),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  // Sign Up Form
-  Widget _buildEmailSignUp() {
     return Container(
-        margin: const EdgeInsets.only(
-            top: 10.0, bottom: 0.0, right: 20.0, left: 20.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            TextField(
-              obscureText: false,
-              decoration: InputDecoration(
-                  labelStyle: TextStyle(color: Colors.green),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: new BorderSide(color: Colors.green, width: 2.0),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: new BorderSide(color: Colors.green, width: 2.0),
-                  ),
-                  hintText: 'Enter your email',
-                  prefixIcon: Icon(
-                    Icons.email,
-                    color: Colors.green,
-                  ),
-                  labelText: 'Email'),
-            ),
-          ],
-        ));
-  }
-
-  Widget _buildPasswordSignUp() {
-    return Container(
-        margin: const EdgeInsets.only(
-            top: 10.0, bottom: 0.0, right: 20.0, left: 20.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            TextField(
-              obscureText: true,
-              decoration: InputDecoration(
-                  labelStyle: TextStyle(color: Colors.green),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: new BorderSide(color: Colors.green, width: 2.0),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: new BorderSide(color: Colors.green, width: 2.0),
-                  ),
-                  hintText: 'Enter your password',
-                  prefixIcon: Icon(
-                    Icons.lock,
-                    color: Colors.green,
-                  ),
-                  labelText: 'Password'),
-            ),
-          ],
-        ));
-  }
-
-  Widget _buildReEnterPasswordSignUp() {
-    return Container(
-        margin: const EdgeInsets.only(
-            top: 10.0, bottom: 0.0, right: 20.0, left: 20.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            TextField(
-              obscureText: true,
-              decoration: InputDecoration(
-                  labelStyle: TextStyle(color: Colors.green),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: new BorderSide(color: Colors.green, width: 2.0),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: new BorderSide(color: Colors.green, width: 2.0),
-                  ),
-                  hintText: 'Re-enter your password',
-                  prefixIcon: Icon(
-                    Icons.lock,
-                    color: Colors.green,
-                  ),
-                  labelText: 'Re-enter Password'),
-            ),
-          ],
-        ));
-  }
-
-  Widget _buildCheckAgreementSignUp() {
-    return Container(
-      margin: const EdgeInsets.only(left: 20.0),
-      child: Row(
-        children: <Widget>[
-          Theme(
-              data: ThemeData(unselectedWidgetColor: Colors.green),
-              child: Checkbox(
-                value: _agree,
-                checkColor: Colors.white,
-                activeColor: Colors.green,
-                onChanged: (value) {
-                  setState(() {
-                    _agree = value!;
-                  });
-                },
-              )),
-          Text(
-            'I agree with terms & conditions',
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildSignUpWith() {
-    return Wrap(
-      children: <Widget>[
-        Center(
-          child: Text(
-            '- OR -',
-            style: TextStyle(color: Colors.orange, fontWeight: FontWeight.bold),
-          ),
-        ),
-        Container(
-          margin: const EdgeInsets.all(20.0),
+        margin: const EdgeInsets.only(top: 15.0),
+        // ignore: deprecated_member_use
+        child: FlatButton(
+          onPressed: () {
+            widget.tabController!.animateTo(1);
+          },
           child: Center(
-            child: Text(
-              'Sign up with',
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
-          ),
-        )
-      ],
-    );
-  }
-
-  Widget _buildSignUpBtn() {
-    return Container(
-      margin: const EdgeInsets.only(
-          left: 20.0, right: 20.0, bottom: 10.0, top: 0.0),
-      padding: EdgeInsets.symmetric(vertical: 5.0),
-      width: double.infinity,
-      child: RaisedButton(
-        elevation: 5.0,
-        onPressed: () => print('Register Button Pressed'),
-        padding: EdgeInsets.all(15.0),
-        shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
-        color: Colors.green,
-        child: Text(
-          'SIGN UP',
-          style: TextStyle(
-              color: Colors.white,
-              letterSpacing: 1.5,
-              fontSize: 18.0,
-              fontWeight: FontWeight.bold,
-              fontFamily: 'OpenSans'),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildSignUpWithGoogle() {
-    return GestureDetector(
-        onTap: () => print('Sign Up with Google'),
-        child: Center(
-          child: Container(
-            margin: const EdgeInsets.only(bottom: 25.0),
-            height: 60.0,
-            width: 60.0,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: Colors.white,
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black26,
-                  offset: Offset(0, 2),
-                  blurRadius: 6.0,
-                ),
-              ],
-              image: DecorationImage(
-                image: AssetImage(
-                  'images/google.jpg',
-                ),
+            child: RichText(
+              text: TextSpan(
+                children: [
+                  TextSpan(
+                      text: 'Don\'t have an account?  ',
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 18.0,
+                          fontWeight: FontWeight.w400)),
+                  TextSpan(
+                      text: 'Sign Up',
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 18.0,
+                          fontWeight: FontWeight.bold)),
+                ],
               ),
             ),
           ),
         ));
-  }
-
-  Widget _buildSignInMsg() {
-    return GestureDetector(
-      onTap: () => print('Sign In Button Pressed'),
-      child: Center(
-        child: RichText(
-          text: TextSpan(
-            children: [
-              TextSpan(
-                  text: 'Already have an account?  ',
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 18.0,
-                      fontWeight: FontWeight.w400)),
-              TextSpan(
-                  text: 'Sign In',
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 18.0,
-                      fontWeight: FontWeight.bold)),
-            ],
-          ),
-        ),
-      ),
-    );
   }
 
 // Main Code
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      initialIndex: 1,
-      length: 2,
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.orange[400],
-          title: const Text(
-            'Git Book',
-            style: TextStyle(color: Colors.black),
-          ),
-          bottom: const TabBar(
-            labelColor: Colors.black,
-            tabs: <Widget>[
-              Tab(
-                text: "Sign In",
-                icon: Icon(Icons.login_outlined),
-              ),
-              Tab(
-                text: "Sign Up",
-                icon: Icon(Icons.app_registration_outlined),
-              ),
-            ],
-          ),
-        ),
-        body: TabBarView(
-          children: <Widget>[
-            Container(
-              margin: const EdgeInsets.only(top: 20.0),
-              child: Wrap(
-                spacing: 20.0,
-                runSpacing: 4.0,
-                children: <Widget>[
-                  Center(
-                    child: Text(
-                      'Sign In',
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontFamily: 'OpenSans',
-                          fontSize: 30.0,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  _buildEmailSignIn(),
-                  _buildPasswordSignIn(),
-                  _buildForgotPasswordSignIn(),
-                  _buildRememberMeSignIn(),
-                  _buildSignInBtn(),
-                  _buildSignInWith(),
-                  _buildSignInWithGoogle(),
-                  _buildSignUpMsg(),
-                ],
-              ),
+    return Scaffold(
+        body: Container(
+      margin: const EdgeInsets.only(top: 20.0),
+      child: Wrap(
+        children: <Widget>[
+          Center(
+            child: Text(
+              'Sign In',
+              style: TextStyle(
+                  color: Colors.black,
+                  fontFamily: 'OpenSans',
+                  fontSize: 30.0,
+                  fontWeight: FontWeight.bold),
             ),
-            Container(
-              margin: const EdgeInsets.only(top: 10.0),
-              child: Wrap(
-                spacing: 20.0,
-                runSpacing: 4.0,
+          ),
+          Form(
+              key: _formKey,
+              child: Column(
                 children: <Widget>[
-                  Center(
-                    child: Text(
-                      'Sign Up',
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontFamily: 'OpenSans',
-                          fontSize: 30.0,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  _buildEmailSignUp(),
-                  _buildPasswordSignUp(),
-                  _buildReEnterPasswordSignUp(),
-                  _buildCheckAgreementSignUp(),
-                  _buildSignUpBtn(),
-                  _buildSignUpWith(),
-                  _buildSignUpWithGoogle(),
-                  _buildSignInMsg(),
+                  _buildEmail(),
+                  _buildPassword(),
                 ],
-              ),
-            ),
-          ],
-        ),
+              )),
+          _buildForgotPassword(),
+          _buildRememberMe(),
+          _buildSignInBtn(),
+          _buildSignInWith(),
+          _buildSignInWithGoogle(),
+          _buildSignUpMsg(),
+        ],
       ),
-    );
+    ));
   }
 }

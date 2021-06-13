@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:git_book/Screens/login_screen.dart';
+import 'package:git_book/Screens/main_screen.dart';
 
-void main() => runApp(const MyApp());
+void main() => runApp(MyApp());
 
 /// This is the main application widget.
 class MyApp extends StatelessWidget {
@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: _title,
       debugShowCheckedModeBanner: false,
-      home: HomeScreen(),
+      home: MainScreen(),
     );
   }
 }
