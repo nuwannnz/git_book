@@ -1,5 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:git_book/Screens/ListTitles.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class RegisterScreen extends StatefulWidget {
   RegisterScreen({Key? key, this.tabController}) : super(key: key);
@@ -19,6 +21,23 @@ class _RegisterScreenState extends State<RegisterScreen> {
   TextEditingController _passwordInputController = TextEditingController();
   TextEditingController _reEnterPwdInputController = TextEditingController();
 
+  _RegisterScreenState() {
+    FirebaseAuth.instance.signOut();
+    GoogleSignIn().signOut();
+    FirebaseAuth.instance.authStateChanges().listen((User? user) {
+      if (user == null) {
+        print('User is currently signed out!');
+      } else {
+        print('User is signed in!');
+        // FirebaseAuth.instance.signOut();
+
+        Navigator.of(context).push(MaterialPageRoute(builder: (_) {
+          return ListTitles();
+        }));
+      }
+    });
+  }
+
   _formSubmit() async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
@@ -30,7 +49,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
         await FirebaseAuth.instance.createUserWithEmailAndPassword(
             email: _emailInputController.text,
             password: _passwordInputController.text);
-        widget.tabController!.animateTo(0);
       } on FirebaseAuthException catch (e) {
         if (e.code == 'weak-password') {
           print('The password provided is too weak.');
@@ -41,6 +59,26 @@ class _RegisterScreenState extends State<RegisterScreen> {
         print(e);
       }
     }
+  }
+
+  Future<UserCredential> _signInWithGoogle() async {
+    // await FirebaseAuth.instance.signOut();
+    // await GoogleSignIn().signOut();
+    // Trigger the authentication flow
+    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+
+    // Obtain the auth details from the request
+    final GoogleSignInAuthentication? googleAuth =
+        await googleUser!.authentication;
+
+    // Create a new credential
+    final credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth!.accessToken,
+      idToken: googleAuth.idToken,
+    );
+
+    // Once signed in, return the UserCredential
+    return await FirebaseAuth.instance.signInWithCredential(credential);
   }
 
   Widget _buildEmail() {
@@ -210,31 +248,32 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   Widget _buildSignUpWithGoogle() {
-    return GestureDetector(
-        onTap: () => print('Sign Up with Google'),
-        child: Center(
-          child: Container(
-            margin: const EdgeInsets.only(bottom: 5.0),
-            height: 60.0,
-            width: 60.0,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: Colors.white,
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black26,
-                  offset: Offset(0, 2),
-                  blurRadius: 6.0,
-                ),
-              ],
-              image: DecorationImage(
-                image: AssetImage(
-                  'images/google.jpg',
-                ),
-              ),
+    return Center(
+        // ignore: deprecated_member_use
+        child: FlatButton(
+      onPressed: _signInWithGoogle,
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 5.0),
+        height: 60.0,
+        width: 60.0,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black26,
+              offset: Offset(0, 2),
+              blurRadius: 6.0,
+            ),
+          ],
+          image: DecorationImage(
+            image: AssetImage(
+              'images/google.jpg',
             ),
           ),
-        ));
+        ),
+      ),
+    ));
   }
 
   Widget _buildSignInMsg() {

@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:git_book/Screens/home.dart';
+import 'package:git_book/Screens/ListTitles.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -31,7 +31,7 @@ class _LoginScreenState extends State<LoginScreen> {
         // FirebaseAuth.instance.signOut();
 
         Navigator.of(context).push(MaterialPageRoute(builder: (_) {
-          return HomeScreen();
+          return ListTitles();
         }));
       }
     });
@@ -47,9 +47,6 @@ class _LoginScreenState extends State<LoginScreen> {
         await FirebaseAuth.instance.signInWithEmailAndPassword(
             email: _emailInputController.text,
             password: _passwordInputController.text);
-        Navigator.of(context).push(MaterialPageRoute(builder: (_) {
-          return HomeScreen();
-        }));
       } on FirebaseAuthException catch (e) {
         if (e.code == 'user-not-found') {
           print('No user found for that email.');
@@ -61,8 +58,8 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Future<UserCredential> _signInWithGoogle() async {
-    await FirebaseAuth.instance.signOut();
-    await GoogleSignIn().signOut();
+    // await FirebaseAuth.instance.signOut();
+    // await GoogleSignIn().signOut();
     // Trigger the authentication flow
     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
 
