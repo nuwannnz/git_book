@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:git_book/Screens/ListTitles.dart';
 import 'package:git_book/notes/noteList.dart';
 import 'package:git_book/notes/notePopup.dart';
 
@@ -70,7 +71,8 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.amber,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      // home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: ListTitles(),
     );
   }
 }
