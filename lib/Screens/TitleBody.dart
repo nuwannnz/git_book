@@ -11,6 +11,17 @@ class Body extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+          appBar: AppBar(
+                leading: IconButton(
+                  icon: Icon(Icons.arrow_back, color: Colors.black),
+                  onPressed: () => Navigator.of(context).pop(),
+                ), 
+                  title: Text("What you learn here", style: TextStyle(color: Colors.black)),
+                  centerTitle: true,
+                   backgroundColor: Color(0xffffa726), 
+                   foregroundColor: Colors.black,
+                   shadowColor: Colors.black,
+              ),
         body: SingleChildScrollView(
                   child: Padding(
               padding: const EdgeInsets.all(8.0),
@@ -31,7 +42,7 @@ class Body extends StatelessWidget {
                           children: <Widget>[
                             Text(
                               showData[id]['title'],
-                              style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.bold),
+                              style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.bold, color:  Color(0xffc77800)),
                             ),
                           ],
                         ),
@@ -63,6 +74,7 @@ class Body extends StatelessWidget {
                             fontSize: 14,
                             fontWeight: item['style'] == "bold" ? FontWeight.bold : FontWeight.normal,
                             fontStyle: item['style'] == "italic" ? FontStyle.italic : FontStyle.normal,
+                            color: item['style'] == "bold" ? Color(0xff4b830d) : Colors.black,
                           ), textAlign:  TextAlign.justify,)).toList())
                         ),
 
