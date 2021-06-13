@@ -1,0 +1,297 @@
+[
+    {
+      
+      "id": 1,
+      "title": "What is GitHub ?",
+      "imageURL" : "data:image/png;base64,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",
+      "subtitle": "GitHub is a code hosting platform for version control and collaboration",
+      "body": [
+            {
+              "para":"GitHub is a code hosting platform for version control and collaboration. It lets you and others work together on projects from anywhere.",
+              "allign": "justify",
+              "style": ""
+            },
+            {
+              "para":"This tutorial teaches you GitHub essentials like repositories, branches, commits, and Pull Requests. You’ll create your own Hello World repository and learn GitHub’s Pull Request workflow, a popular way to create and review code.",
+              "allign": "justify",
+              "style": ""
+            },
+            {
+              "para":"To complete this tutorial, you need a GitHub.com account and Internet access. You don’t need to know how to code, use the command line, or install Git (the version control software GitHub is built on).",
+              "allign": "justify",
+              "style": ""
+            }
+        ]
+      },
+    {
+   
+      "id": 2,
+      "title": "Create a Repository",
+      "imageURL" : "https://guides.github.com/activities/hello-world/create-new-repo.png",
+      "subtitle": "A repository is usually used to organize a single project.",
+              
+      "body": [
+                {
+                  "para":"A repository is usually used to organize a single project. Repositories can contain folders and files, images, videos, spreadsheets, and data sets – anything your project needs. We recommend including a README, or a file with information about your project. GitHub makes it easy to add one at the same time you create your new repository. It also offers other common options such as a license file. \n ",
+                  "allign": "justify",
+                  "style": ""
+                },
+                {
+                  "para":"To create a repository",
+                  "allign": "left",
+                  "style": "bold"
+                },
+                {
+                  "para":"1. In the upper right corner, next to your avatar or identicon, click  and then select New repository.",
+                  "allign": "left",
+                  "style": "italic"
+                },
+                {
+                  "para":"2. Name your repository <any name>",
+                  "allign": "left",
+                  "style": "italic"
+                },
+                {
+                  "para":"3. Write a short description.",
+                  "allign": "left",
+                  "style": "italic"
+                }
+                ,
+                {
+                  "para":"4. Select Initialize this repository with a README.",
+                  "allign": "left",
+                  "style": "italic"
+                },
+                {
+                  "para":"5. Click Create repository",
+                  "allign": "left",
+                  "style": "italic"
+                }
+          ]
+      },
+    {
+   
+        "id": 3,
+        "title": "Create a branch",
+        "imageURL" : "https://guides.github.com/activities/hello-world/branching.png",
+        "subtitle": "Branching is the way to work on different versions of a repository at one time.",
+        "body": [
+            {
+              "para":"Branching is the way to work on different versions of a repository at one time.",
+              "allign": "justify",
+              "style": ""
+            },
+            {
+              "para":"By default your repository has one branch named main which is considered to be the definitive branch. We use branches to experiment and make edits before committing them to main.",
+              "allign": "justify",
+              "style": ""
+            },
+            {
+              "para":"When you create a branch off the main branch, you’re making a copy, or snapshot, of main as it was at that point in time. If someone else made changes to the main branch while you were working on your branch, you could pull in those updates. \n",
+              "allign": "justify",
+              "style": ""
+            },
+            {
+              "para":"To create a new branch",
+              "allign": "left",
+              "style": "bold"
+            }
+            ,
+            {
+              "para":"1. Go to your new repository",
+              "allign": "left",
+              "style": "italic"
+            },
+            {
+              "para":"2. Click the drop down at the top of the file list that says branch: main.",
+              "allign": "left",
+              "style": "italic"
+            },
+            {
+              "para":"3. Type a branch name, readme-edits, into the new branch text box.",
+              "allign": "left",
+              "style": "italic"
+            }
+            ,
+            {
+              "para":"4. Select the blue Create branch box or hit “Enter” on your keyboard. \n",
+              "allign": "left",
+              "style": "italic"
+            },
+            {
+              "para":"Now you have two branches, main and readme-edits. They look exactly the same, but not for long! Next we’ll add our changes to the new branch.",
+              "allign": "justify",
+              "style": ""
+            }
+          ]
+        },
+      {
+   
+        "id": 4,
+        "title": "Make and commit changes",
+        "imageURL" : "https://guides.github.com/activities/hello-world/commit.png",
+        "subtitle": "Let’s make some edits.",
+  
+        "body": [
+          {
+            "para":"On GitHub, saved changes are called commits. Each commit has an associated commit message, which is a description explaining why a particular change was made. Commit messages capture the history of your changes, so other contributors can understand what you’ve done and why. \n",
+            "allign": "justify",
+            "style": ""
+          },
+          {
+            "para":"Make and commit changes",
+            "allign": "left",
+            "style": "bold"
+          },
+          {
+            "para":"1. Click the README.md file.",
+            "allign": "left",
+            "style": "italic"
+          },
+          {
+            "para":"2. Click the  pencil icon in the upper right corner of the file view to edit.",
+            "allign": "left",
+            "style": "italic"
+          }
+          ,
+          {
+            "para":"3. In the editor, write a bit about yourself.",
+            "allign": "left",
+            "style": "italic"
+          },
+          {
+            "para":"4. Write a commit message that describes your changes.",
+            "allign": "left",
+            "style": "italic"
+          },
+          {
+            "para":"5. Click Commit changes button. \n",
+            "allign": "left",
+            "style": "italic"
+          },
+          {
+            "para":"These changes will be made to just the README file on your readme-edits branch, so now this branch contains content that’s different from main.",
+            "allign": "justify",
+            "style": ""
+          }
+        ]
+         },
+         {
+   
+          "id": 5,
+          "title": "Open a Pull Request",
+          "imageURL" : "https://atlassianblog.wpengine.com/wp-content/uploads/bitbucket411-blog-1200x-branches2.png",
+          "subtitle": "As soon as you make a commit, you can open a pull request and start a discussion",
+        
+          "body": [
+            {
+              "para":"Nice edits! Now that you have changes in a branch off of main, you can open a pull request.",
+              "allign": "justify",
+              "style": ""
+            },
+            {
+              "para":"Pull Requests are the heart of collaboration on GitHub. When you open a pull request, you’re proposing your changes and requesting that someone review and pull in your contribution and merge them into their branch. Pull requests show diffs, or differences, of the content from both branches. The changes, additions, and subtractions are shown in green and red.",
+              "allign": "justify",
+              "style": ""
+            },
+            {
+              "para":"As soon as you make a commit, you can open a pull request and start a discussion, even before the code is finished.",
+              "allign": "justify",
+              "style": ""
+            },
+            {
+              "para":"By using GitHub’s @mention system in your pull request message, you can ask for feedback from specific people or teams, whether they’re down the hall or 10 time zones away.",
+              "allign": "justify",
+              "style": ""
+            }
+            ,
+            {
+              "para":"You can even open pull requests in your own repository and merge them yourself. It’s a great way to learn the GitHub flow before working on larger projects. \n",
+              "allign": "justify",
+              "style": ""
+            },
+            {
+              "para":"Steps \n",
+              "allign": "left",
+              "style": "bold"
+            },
+            {
+              "para":"1. Click the  Pull Request tab, then from the Pull Request page, click the green New pull request button.",
+              "allign": "left",
+              "style": "italic"
+            },
+            {
+              "para":"2. In the Example Comparisons box, select the branch you made, readme-edits, to compare with main (the original).",
+              "allign": "left",
+              "style": "italic"
+            },
+            {
+              "para":"3. Look over your changes in the diffs on the Compare page, make sure they’re what you want to submit.",
+              "allign": "left",
+              "style": "italic"
+            },
+            {
+              "para":"4. When you’re satisfied that these are the changes you want to submit, click the big green Create Pull Request button.",
+              "allign": "left",
+              "style": "italic"
+            },
+            {
+              "para":"5. Give your pull request a title and write a brief description of your changes. \n",
+              "allign": "left",
+              "style": "italic"
+            },
+            {
+              "para":"When you’re done with your message, click Create pull request!",
+              "allign": "justify",
+              "style": ""
+            }
+          ]
+           },
+           {
+   
+            "id": 6,
+            "title": "Merge your Pull Request",
+            "imageURL" : "https://guides.github.com/activities/hello-world/merge-button.png",
+            "subtitle": " it’s time to bring your changes together",
+     
+            "body": [
+              {
+                "para":"In this final step, it’s time to bring your changes together – merging your readme-edits branch into the main branch. \n",
+                "allign": "justify",
+                "style": ""
+              },
+              {
+                "para":"Steps \n",
+                "allign": "justify",
+                "style": "bold"
+              },
+              {
+                "para":"1. Click the green Merge pull request button to merge the changes into main.",
+                "allign": "left",
+                "style": "italic"
+              },
+              {
+                "para":"2. Click Confirm merge.",
+                "allign": "left",
+                "style": "italic"
+              },
+              {
+                "para":"3. Go ahead and delete the branch, since its changes have been incorporated, with the Delete branch button in the purple box.",
+                "allign": "left",
+                "style": "italic"
+              }
+              ,
+              {
+                "para":"4. Select Initialize this repository with a README.",
+                "allign": "left",
+                "style": "italic"
+              },
+              {
+                "para":"5. Click Create repository",
+                "allign": "left",
+                "style": "italic"
+              }
+          ]
+             }
+    
+  ]
