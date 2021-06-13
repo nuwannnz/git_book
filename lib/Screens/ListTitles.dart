@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'package:git_book/notes/noteList.dart';
 import 'package:git_book/notes/notePopup.dart';
+import 'package:git_book/aboutUs.dart';
+import 'package:git_book/myProfile.dart';
 
 import 'TitleBody.dart';
 import 'package:flutter/material.dart';
@@ -31,6 +33,22 @@ class _ListTitlesState extends State<ListTitles> {
             onPressed: () {
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => new NoteList()));
+            },
+          ),
+          IconButton(
+            icon: const Icon(Icons.info_outline),
+            tooltip: 'View notes',
+            onPressed: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => new AboutUs()));
+            },
+          ),
+          IconButton(
+            icon: const Icon(Icons.account_circle),
+            tooltip: 'View notes',
+            onPressed: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => new MyProfile()));
             },
           ),
         ],

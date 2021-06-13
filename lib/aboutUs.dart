@@ -263,9 +263,10 @@ class AboutUs extends StatelessWidget {
                     )
                   ),
                   Text(
-                        'IT18XXXXXX',
+                        'IT18086744@my.sliit.lk',
                         softWrap: true,
                         style: TextStyle(
+                          fontSize: 15,
                           color: Color(0xFF7cb342)),
                         )
                 ],
@@ -286,9 +287,10 @@ class AboutUs extends StatelessWidget {
                     )
                   ),
                    Text(
-                        'IT18XXXXXX',
+                        'IT18073638@my.sliit.lk',
                         softWrap: true,
                         style: TextStyle(
+                          fontSize: 15,
                           color: Color(0xFF7cb342)),
                         )
                 ],
@@ -313,9 +315,10 @@ class AboutUs extends StatelessWidget {
                     )
                   ),
                    Text(
-                        'IT18XXXXXX',
+                        'IT18088106@my.sliit.lk',
                         softWrap: true,
                         style: TextStyle(
+                          fontSize: 15,
                           color: Color(0xFF7cb342)),
                         )
                 ],
@@ -336,9 +339,10 @@ class AboutUs extends StatelessWidget {
                     )
                   ),
                    Text(
-                        'IT18152906',
+                        'IT18152906@my.sliit.lk',
                         softWrap: true,
                         style: TextStyle(
+                          fontSize: 15,
                           color: Color(0xFF7cb342)),
                         )
                 ],

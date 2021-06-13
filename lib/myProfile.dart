@@ -1,3 +1,5 @@
+//import 'dart:html';
+
 import 'package:flutter/material.dart';
 import 'package:git_book/main.dart';
 
@@ -5,20 +7,19 @@ class MyProfile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-        resizeToAvoidBottomInset: false,
+        resizeToAvoidBottomInset: true,
         appBar: AppBar(
           title: Text("Git Book"),
         ),
-        body: ListView(
-          children: <Widget>[
-            Column(children: [
+        body: SingleChildScrollView(
+          child: Column(children: [
               TopContainer(),
               MyCustomForm(),
-            ])
-          ],
+            ]),
         ));
   }
 }
+
 
 class TopContainer extends StatefulWidget {
   @override
@@ -31,9 +32,10 @@ class TopContainerState extends State<TopContainer> {
   Widget build(BuildContext context) {
     // Build a Form widget using the _formKey created above.
     return SizedBox(
-      height: MediaQuery.of(context).size.height / 2,
+      height: 350,
       child: Container(
         decoration: BoxDecoration(
+            
             color: Color(0xFFffa726), //remove color to make it transpatent
             border: Border.all(style: BorderStyle.solid, color: Colors.white)),
         child: Column(
@@ -56,38 +58,80 @@ class TopContainerState extends State<TopContainer> {
                       fontSize: 25,
                     ))),
             Container(
-                decoration: BoxDecoration(
-                    color:
-                        Color(0xFF7cb342), //remove color to make it transpatent
-                    border: Border.all(
+                    decoration:  BoxDecoration(
+                      color:Color(0xFF7cb342), 
+                      border: Border.all(//remove color to make it transpatent
                         style: BorderStyle.solid, color: Colors.white)),
-                margin: const EdgeInsets.only(bottom: 0, top: 20.0),
+                           
+                margin: EdgeInsets.only(bottom: 0, top: 23),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    SizedBox(
+                    Container(
+                       decoration: BoxDecoration(
+                    color:
+                        Color(0xFF7cb342), //remove color to make it transpatent
+                    border: Border(right :BorderSide(style: BorderStyle.solid, color: Colors.white))),
+                   
+                      child: Row(
+                        children:[
+                          SizedBox(
                       //height: MediaQuery.of(context).size.height / 6
                       child: Align(
                           alignment: Alignment.bottomLeft,
                           child: Text(
-                            'Lessons : 12 \nCompleted  ',
-                            style: TextStyle(
-                                //fontWeight: FontWeight.bold,
-                                fontSize: 25,
-                                color: Color(0xFFFFFFFF)),
-                          )),
-                    ),
-                    SizedBox(
-                      //height: MediaQuery.of(context).size.height / 6,
-                      child: Align(
-                          alignment: Alignment.bottomRight,
-                          child: Text(
-                            'Level : 8',
+                            'Lessons  \nCompleted  ',
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 25,
                                 color: Color(0xFFFFFFFF)),
                           )),
+                    ),
+                    SizedBox(
+                      //height: MediaQuery.of(context).size.height / 6
+                      child: Align(
+                          alignment: Alignment.bottomLeft,
+                          child: Text(
+                            ': 12 ',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 30,
+                                color: Color(0xFFFFFFFF)),
+                          )),
+                    ),
+                        ]
+                      ),
+                    ),
+                    
+                    Container(
+                      child: Row(
+                        children:[
+                          SizedBox(
+                      //height: MediaQuery.of(context).size.height / 6
+                      child: Align(
+                          alignment: Alignment.bottomLeft,
+                          child: Text(
+                            'Level ',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 25,
+                                color: Color(0xFFFFFFFF)),
+                          )),
+                    ),
+                    SizedBox(
+                      //height: MediaQuery.of(context).size.height / 6
+                      child: Align(
+                          alignment: Alignment.bottomLeft,
+                          child: Text(
+                            ': 8 ',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 30,
+                                color: Color(0xFFFFFFFF)),
+                          )),
+                    ),
+                        ]
+                      ),
                     ),
                   ],
                 ))
@@ -118,7 +162,8 @@ class MyCustomFormState extends State<MyCustomForm> {
     // Build a Form widget using the _formKey created above.
     return Form(
         key: _formKey,
-        child: Container(
+        child: 
+        Container(
           padding: const EdgeInsets.all(32),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -127,6 +172,7 @@ class MyCustomFormState extends State<MyCustomForm> {
                   padding: const EdgeInsets.all(20),
                   child: TextFormField(
                     initialValue: "nirmal amanda",
+                    textInputAction: TextInputAction.done,
                     decoration: InputDecoration(
                         border: UnderlineInputBorder(), labelText: 'Name'),
                     validator: (name) {
@@ -139,6 +185,7 @@ class MyCustomFormState extends State<MyCustomForm> {
               Container(
                   padding: const EdgeInsets.all(20),
                   child: TextFormField(
+                    textInputAction: TextInputAction.done,
                     obscureText: true,
                     initialValue: "nirmal@123",
                     enableSuggestions: false,
@@ -156,6 +203,9 @@ class MyCustomFormState extends State<MyCustomForm> {
                   padding: const EdgeInsets.all(20),
                   child: TextFormField(
                     initialValue: "0704081881",
+                    maxLength: 10,
+                    textInputAction: TextInputAction.done,
+                    keyboardType: TextInputType.number,
                     decoration: InputDecoration(
                         border: UnderlineInputBorder(), labelText: 'Mobile'),
                     validator: (mobile) {
@@ -171,6 +221,9 @@ class MyCustomFormState extends State<MyCustomForm> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        minimumSize: Size( 100,   45 )
+                    ),
                     onPressed: () {
                       // Validate returns true if the form is valid, or false otherwise.
                       Navigator.push(
@@ -181,6 +234,9 @@ class MyCustomFormState extends State<MyCustomForm> {
                     child: Text('Cancel'),
                   ),
                   ElevatedButton(
+                     style: ElevatedButton.styleFrom(
+                        minimumSize: Size( 100,   45 )
+                    ),
                     onPressed: () {
                       // Validate returns true if the form is valid, or false otherwise.
                       if (_formKey.currentState!.validate()) {
@@ -214,7 +270,7 @@ showAlertDialog(BuildContext context) {
   // set up the AlertDialog
   AlertDialog alert = AlertDialog(
     title: Text("Updated Successfully"),
-    content: Text("You have successfully updated"),
+    content: Text("You have successfully updated your details"),
     actions: [
       okButton,
     ],
