@@ -4,6 +4,8 @@ import 'package:git_book/Screens/main_screen.dart';
 import 'package:git_book/notes/noteList.dart';
 import 'package:git_book/notes/notePopup.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:git_book/aboutUs.dart';
+import 'package:git_book/myProfile.dart';
 
 import 'TitleBody.dart';
 import 'package:flutter/material.dart';
@@ -44,6 +46,22 @@ class _ListTitlesState extends State<ListTitles> {
             onPressed: () {
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => new NoteList()));
+            },
+          ),
+          IconButton(
+            icon: const Icon(Icons.info_outline),
+            tooltip: 'About us',
+            onPressed: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => new AboutUs()));
+            },
+          ),
+          IconButton(
+            icon: const Icon(Icons.account_circle),
+            tooltip: 'My profile',
+            onPressed: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => new MyProfile()));
             },
           ),
         ],
